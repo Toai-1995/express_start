@@ -1,9 +1,9 @@
 import mysql  from 'mysql'
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: '3.85.225.40',
   port: 3306,
-  user: 'root',
-  password: 'secret',
+  user: 'tom',
+  password: '123456',
   database: 'todolist'
 })
 
