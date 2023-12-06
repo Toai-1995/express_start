@@ -18,7 +18,7 @@ class AccessService {
   static signUp = async ({ name, email, password }) => {
     const holderShop = await shopModel.findOne({ email }).lean();
     if (holderShop) {
-      throw ConflictRequestError("Error: Shop already register!")
+      throw new ConflictRequestError("Error: Shop already register!")
     }
     const salt = await bcrypt.genSalt(saltRounds);
     const passwordHash = await bcrypt.hash(password, salt);
