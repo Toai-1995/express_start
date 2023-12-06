@@ -1,7 +1,7 @@
 const {model, Schema, Types} = require('mongoose'); // Erase if already required
 
-const DATABASE_NAME = process.env.DATABASE_NAME
-const COLLECTION_NAME = 'shopDEV'
+const DATABASE_NAME = 'Shop'
+const COLLECTION_NAME = 'Shops'
 
 // Declare the Schema of the Mongo model
 const shopSchema = new Schema({

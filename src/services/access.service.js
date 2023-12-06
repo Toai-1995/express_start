@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const KeyTokenService = require("./keyToken.service");
 const {createTokenPair} = require("../auth/authUtils");
+const { getInfoData } = require("../utils");
+const {ConflictRequestError, BadRequestError} = require('../core/error.response')
 
 const saltRounds = 10;
 const RoleShop = {
@@ -16,10 +18,7 @@ class AccessService {
   static signUp = async ({ name, email, password }) => {
     const holderShop = await shopModel.findOne({ email }).lean();
     if (holderShop) {
-      return {
-        code: "xxxxx",
-        message: "Shop already register",
-      };
+      throw ConflictRequestError("Error: Shop already register!")
     }
     const salt = await bcrypt.genSalt(saltRounds);
     const passwordHash = await bcrypt.hash(password, salt);
@@ -60,11 +59,10 @@ class AccessService {
           publicKeyObject,
           privateKey
           )
-      console.log(`Create token success::`, tokens)
       return {
         code: 201,
         metadata:{
-          shop: newShop,
+          shop: getInfoData({ field: ["_id", "name", "email"], object: newShop}),
           tokens
         }
       }
