@@ -42,5 +42,6 @@ class Created extends SuccessResponse {
 
 module.exports = {
     Success,
-    Created
+    Created,
+    SuccessResponse
 }

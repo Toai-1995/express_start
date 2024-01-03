@@ -1,6 +1,12 @@
 const AccessService = require("../services/access.service");
-const {Success, Created} = require('../core/success.response')
+const {Success, Created, SuccessResponse} = require('../core/success.response')
 class AccessController {
+
+    async login(req, res, next){
+        new SuccessResponse({
+            metadata: await AccessService.login(req.body )
+        })
+    }
 
     async signUp(req, res, next){
         new Created({
