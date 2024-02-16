@@ -17,6 +17,11 @@ const RoleShop = {
 
 class AccessService {
 
+  static logout = async (keyStore) => {
+    const delKey = await KeyTokenService.removeKeyById(keyStore._id)
+    return delKey
+  }
+
   static login = async ({email, password, refreshToken = null}) => {
     const foundShop = await findByEmail({email})
     if (!foundShop) throw new BadRequestError('Shop not registered')
@@ -27,14 +32,15 @@ class AccessService {
     const privateKey = crypto.randomBytes(64).toString('hex')
     const publicKey = crypto.randomBytes(64).toString('hex')
     
+    const { _id: userId} = foundShop
     const tokens = await createTokenPair(
-      {userId: foundShop._id, email},
+      {userId, email},
       publicKey,
       privateKey
       )
     
     await KeyTokenService.createKeyToken({
-      userId: foundShop._id,
+      userId,
       privateKey,
       publicKey,
       refreshToken: tokens.refreshToken 
@@ -49,7 +55,7 @@ class AccessService {
   static signUp = async ({ name, email, password }) => {
     const holderShop = await shopModel.findOne({ email }).lean();
     if (holderShop) {
-      throw new ConflictRequestError("Error: Shop already register!")
+      throw new ConflictRequestError()
     }
     const salt = await bcrypt.genSalt(saltRounds);
     const passwordHash = await bcrypt.hash(password, salt);
@@ -61,15 +67,15 @@ class AccessService {
     });
     if (newShop) {
       //create private key and public key
-      const privateKey = crypto.randomBytes(64).toString('hex')
-      const publicKey = crypto.randomBytes(64).toString('hex')
+      const privateKey = crypto.getRandomValues(64).toString('hex')
+      const publicKey = crypto.getRandomValues(64).toString('hex')
 
       const keyStore = await KeyTokenService.createKeyToken({
         userId: newShop._id,
         publicKey
       })
 
-      if(keyStore){
+      if(!keyStore){
         return {
           code: "xxxxx",
           message: "publicKey Error",
@@ -82,11 +88,8 @@ class AccessService {
           privateKey
           )
       return {
-        code: 201,
-        metadata:{
           shop: getInfoData({ field: ["_id", "name", "email"], object: newShop}),
           tokens
-        }
       }
     }
   };

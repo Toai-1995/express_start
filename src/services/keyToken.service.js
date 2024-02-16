@@ -1,8 +1,8 @@
 'use strict'
 
-const { filter, update } = require('lodash')
 const keyTokenModel = require('../models/keytoken.model')
-const { options } = require('../routes')
+const {Types} = require('mongoose')
+
 class KeyTokenService {
 
     static createKeyToken = async ({userId, publicKey, privateKey, refreshToken}) => {
@@ -15,6 +15,14 @@ class KeyTokenService {
         } catch (err){
             return err
         }
+    }
+
+    static findByUserId = async (userId) => {
+        return await keyTokenModel.findOne({user: new Types.ObjectId(userId)}).lean()
+    }
+
+    static removeKeyById = async(id) => {
+        return await keyTokenModel.deleteOne({_id: id})
     }
 }
 
