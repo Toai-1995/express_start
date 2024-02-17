@@ -8,7 +8,7 @@ const COLLECTION_NAME = 'Keys'
 var keyTokenSchema = new Schema({
     user:{
         type: Schema.Types.ObjectId,
-        require: true,
+        required: true,
         ref: 'Shop'
     },
     publicKey:{
@@ -17,11 +17,11 @@ var keyTokenSchema = new Schema({
     },
     privateKey: {
         type: String,
-        require: true
+        required: true
     },
     refreshToken:{
         type: String,
-        require: true
+        required: true
     },
     refreshTokensUsed:{
         type: Array,
