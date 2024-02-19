@@ -53,7 +53,7 @@ class AccessService {
   }
 
   static signUp = async ({ name, email, password }) => {
-    const holderShop = await shopModel.findOne({ email }).lean();
+        const holderShop = await shopModel.findOne({ email }).lean();
     if (holderShop) {
       throw new ConflictRequestError()
     }
@@ -63,18 +63,18 @@ class AccessService {
       name,
       email,
       password: passwordHash,
-      roles: [RoleShop.SHOP],
+roles: [RoleShop.SHOP],
     });
-    if (newShop) {
-      //create private key and public key
-      const privateKey = crypto.getRandomValues(64).toString('hex')
-      const publicKey = crypto.getRandomValues(64).toString('hex')
-
+        if (newShop) {
+            //create private key and public key
+      const privateKey = crypto.randomBytes(64).toString('hex')
+      const publicKey = crypto.randomBytes(64).toString('hex')
+      
       const keyStore = await KeyTokenService.createKeyToken({
         userId: newShop._id,
         publicKey
       })
-
+      
       if(!keyStore){
         return {
           code: "xxxxx",
