@@ -3,6 +3,7 @@
 const { product, clothing, electronic, furniture } = require("../models/product.model");
 const { BadRequestError } = require("../core/error.response");
 const { model } = require("mongoose");
+const { findAllDraftForShop } = require("../repositories/product.repo");
 // define factory class to create product
 
 class ProductFactory {
@@ -19,6 +20,15 @@ class ProductFactory {
 
   static registerProducType(type, classRef){
     ProductFactory.producRegistry[type] = classRef
+  }
+
+
+  // query
+  static async findAllDraftForShop({product_shop, limit=50, skip=0}){
+    const query = {
+      product_shop, isDraft: true
+    }
+    return await findAllDraftForShop(query, limit, skip)
   }
 }
 
