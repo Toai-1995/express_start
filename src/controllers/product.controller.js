@@ -11,6 +11,24 @@ class ProductController {
       }),
     }).send(res);
   };
+
+  //query
+/**
+ * @description Get all draft
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+  getAllDraftForShop = async (req, res, next) => {
+    new SuccessResponse({
+      message: " Get list draft success",
+      metadata: await ProductService.findAllDraftForShop(
+        req.user.userId
+      ),
+    }).send(res);
+  };
+
+  //end query
 }
 
 module.exports = new ProductController();
