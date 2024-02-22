@@ -21,14 +21,13 @@ class ProductFactory {
   }
 
   static producRegistry = {} // key: class
-
   static registerProducType(type, classRef){
     ProductFactory.producRegistry[type] = classRef
   }
 
   // PUT //
-    static async publishProductByShop(product_shop, product_id){
-      return await publishProductByShop(product_shop, product_id)
+    static async publishProductByShop({product_id, product_shop}){
+      return await publishProductByShop({product_id, product_shop})
     }
   //  END PUT//
 

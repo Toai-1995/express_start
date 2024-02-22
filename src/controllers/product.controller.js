@@ -12,49 +12,44 @@ class ProductController {
     }).send(res);
   };
 
-  publishProductShop = async (req, res, next){
+  publishProductShop = async (req, res, next) => {
     new SuccessResponse({
-      message: "Create new Product success!",
+      message: "Update product success!",
       metadata: await ProductService.publishProductByShop({
-        prodcut_id: req.params.id,
+        product_id: req.params.id_,
         product_shop: req.user.userId,
       }),
     }).send(res);
-  }
+  };
 
   //query
-/**
- * @description Get all draft
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- */
+  /**
+   * @description Get all draft
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
   getAllDraftForShop = async (req, res, next) => {
     new SuccessResponse({
       message: " Get list draft success",
-      metadata: await ProductService.findAllDraftForShop(
-        req.user.userId
-      ),
+      metadata: await ProductService.findAllDraftForShop(req.user.userId),
     }).send(res);
   };
 
   /**
- * @description Get all draft
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- */
+   * @description Get all publish shop
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
   getAllPublishForShop = async (req, res, next) => {
     new SuccessResponse({
       message: " Get list draft success",
-      metadata: await ProductService.findAllPublishForShop(
-        req.user.userId
-      ),
+      metadata: await ProductService.findAllPublishForShop(req.user.userId),
     }).send(res);
   };
 
   //end query
-
 }
 
 module.exports = new ProductController();
